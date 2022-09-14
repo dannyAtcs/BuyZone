@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Index</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script  type="text/javascript">
+function OnSubmitForm()
+{
+   var param = document.getElementById("param").value;
+   document.productform.action="service/"+param;
+   return true;
+}
+</script>
+
+</head>
+
+
+
+<body>
+
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/login">Buyzone</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<div  th:remove="tag">
+
+
+    <div th:if="${products.size()==0}" > <h1>No Product Found </h1></div>
+
+    <div th:each="product : ${products}">
+    <div class="container mt-5 mb-5">
+        <div class="d-flex justify-content-center row">
+            <div class="col-md-10"><div class="row p-2 bg-white border rounded">
+                <div class="col-md-3 mt-1"> <a href="http://localhost:5000/app/product/search/{product.proName}"> <img th:src="${product.imgUrl}" class="img-fluid img-responsive rounded product-image" alt="..."></a>
+                </div>
+                <div class="col-md-6 mt-1">
+                    <h5 th:text="${product.proName}"></h5><br>
+                    <h6 th:text="${product.proBrand}"></h6>
+                    <p class="text-justify mb-0" th:text="${product.proDescription}"><br><br>
+                    </p>
+                </div>
+                <div class="align-items-center align-content-center col-md-3 border-left mt-1">
+                    <div class="d-flex flex-row align-items-center">
+                        <h4 class="mr-1" th:text="${product.proPrice}"><h4>Rs</h4></h4>
+                    </div>
+                    <form name="productform" action="service" method="GET" onsubmit="return OnSubmitForm();">
+                    <input type="text" name="param" id="param" placeholder="Enter Pincode">
+                        <br>
+                        <br>
+                        <button type="submit" class="btn btn-danger" >Serviceability</button>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+        <br>
+  </div>
+</div>
+</body>
+</html>

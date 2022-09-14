@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+    /* Remove the navbar's default rounded borders and increase the bottom margin */
+    .navbar {
+      margin-bottom: 10px;
+      border-radius: 0;
+    }
+    .btn-primary{
+    background-color: #171717 !important;
+    border-color: transparent;
+    margin-top: 8px;
+      border-radius: 0;
+    }
+
+    /* Remove the jumbotron's default bottom margin */
+     .jumbotron {
+      margin-bottom: 0;
+      height: 50px;
+    }
+
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+  </style>
+    <script type="text/javascript">
+function OnSubmitForm()
+{
+   var param = document.getElementById("param").value;
+   console.log(param);
+   document.productform.action="http://localhost:5000/app/product/search/"+param;
+   return true;
+}
+function OnSubmitFilter(){
+var price1 = document.getElementById("price1").value;
+var price2 = document.getElementById("price2").value;
+document.filterForm.action="app/product/filter/" + price1+ "/" + price2;
+return true;
+}
+</script>
+</head>
+<body>
+
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">BuyZone</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+<!--                <li class="active"><a href="#">Home</a></li>-->
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+
+                <li><form th:action="@{/api/logout}" method="POST"><button class="btn btn-primary" type="submit" value="logout" > Logout</button></form></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div>
+<form name="filterForm" class="form-inline" action="product" method="get" onsubmit="return OnSubmitFilter();">
+    <label name="price1">From</label>
+    <input type="number" id="price1" placeholder="Enter lower price" name="price1">
+    <label name="price2">To</label>
+    <input type="number" id="price2" placeholder="Enter highest price" name="price2">
+    <input type="submit" value="apply">
+</form>
+</div>
+
+<div class="container-fluid text-center">
+    <form name="productform" action="product" method="GET" onsubmit="return OnSubmitForm();">
+         <input type="text" name="param" id="param" placeholder="Type/Name/Brand/Code">
+        <input type="submit" value="Search">
+    </form>
+</div>
+<br>
+<br>
+
+<!--<form name="productform" action="product" method="GET" onsubmit="return OnSubmitForm();">-->
+<!--    Search: <input type="text" name="param" id="param">-->
+<!--    <input type ="submit" value="search"></form>-->
+<div class="container">
+    <div class="row">
+        <div th:each="product : ${products}">
+            <div class="col-sm-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" th:text="${product.proName}"></div>
+                    <div class="panel-body"> <a th:href="@{'/app/product/search/' + ${product.proName}}" >
+                        <img th:src="${product.imgUrl }" class="img-responsive" style="width:400px;height:200px;" alt="Image"></a></div>
+                    <div class="panel-footer" th:text="${product.proPrice}">Rs</div>
+<!--                    <form action="productview" method="get"><button name="pro" class="btn btn-primary" value= "th:text=${product.proName}>See details>></button></form>-->
+
+                </div>
+            </div>
+            </div:forEach>
+
+
+        </div>
+    </div><br>
+
+
+<!--    <header class="container-fluid text-center">-->
+<!--        <form class="form-inline">Search:-->
+<!--            <input type="email" class="form-control" size="50" placeholder="Search">-->
+<!--            <button type="button" class="btn btn-danger">Search</button>-->
+<!--        </form>-->
+<!--    </header>-->
+</div>
+</body>
+</html>
